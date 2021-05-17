@@ -39,6 +39,6 @@ The attributes listed below are used in *course.json* to configure **Adapt Globa
 **Version number:**  0.0.1   
 **Framework versions:**  >=5.8   
 **Author / maintainer:** Kineo   
-**Accessibility support:** Yes   
+**Accessibility support:** No   
 **RTL support:** Yes   
 **Cross-platform coverage:** Evergreen + IE11   
