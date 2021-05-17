@@ -40,6 +40,7 @@ export default class AudioView extends Backbone.View {
 
   setUpListeners() {
     this.$el.on('onscreen', this.onScreenChange);
+    this.listenTo(Adapt, 'media:stop', this.onMediaStop);
   }
 
   onScreenChange(event, { onscreen, percentInview } = {}) {
@@ -61,6 +62,12 @@ export default class AudioView extends Backbone.View {
     if (!this.config._autoPlay) return;
     if (this.hasUserPaused) return;
     await this.play(true);
+  }
+
+  onMediaStop(view) {
+    if (view === this) return;
+    this.pause();
+    this.rewind();
   }
 
   async play() {
@@ -139,7 +146,13 @@ export default class AudioView extends Backbone.View {
     Adapt.a11y.toggleEnabled(this.$player.find('.globalaudio__rewind'), this.audioTag.currentSeconds !== 0);
   }
 
-  async onPlayPauseClick() {
+  async onPlayPauseClick(event) {
+    Adapt.trigger('media:stop', this);
+    if (this.$el.closest('button').length) {
+      // do not activate any parent buttons
+      event.preventDefault();
+      event.stopPropagation();
+    }
     await this.togglePlayPause();
     this.hasUserPaused = this.audioTag.isPaused;
     if (this.hasUserPaused && this.config._onPauseRewind) {
