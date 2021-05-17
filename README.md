@@ -15,7 +15,7 @@ The attributes listed below are used in *course.json* to configure **Adapt Globa
 
 ### Attributes
 
-**\_globalAudio** (object): It contains values for **\_isEnabled**, **\_onScreenPercentInviewVertical**, **\_offScreenPause**, **\_offScreenRewind**, **\_showPauseControl** and **\_onPauseRewind**
+**\_globalAudio** (object): It contains values for **\_isEnabled**, **\_onScreenPercentInviewVertical**, **\_offScreenPause**, **\_offScreenRewind** and **\_onPauseRewind**
 
 >**\_isEnabled** (String): Defaults to `true`.
 
@@ -24,8 +24,6 @@ The attributes listed below are used in *course.json* to configure **Adapt Globa
 >**\_offScreenPause** (Boolean): Pause when off screen. Defaults to `true`.
 
 >**\_offScreenRewind** (Boolean): Rewind when off screen. Defaults to `true`.
-
->**\_showPauseControl** (Boolean): Show the play / pause button. Defaults to `false`.
 
 >**\_onPauseRewind** (Boolean): Rewind when the pause button is clicked. Defaults to `false`.
 
