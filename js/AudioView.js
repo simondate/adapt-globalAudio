@@ -148,7 +148,7 @@ export default class AudioView extends Backbone.View {
 
   async onPlayPauseClick(event) {
     Adapt.trigger('media:stop', this);
-    if (this.$el.closest('button').length) {
+    if (this.$el.closest('button, a, [role=link], [role=button]').length) {
       // do not activate any parent buttons
       event.preventDefault();
       event.stopPropagation();
