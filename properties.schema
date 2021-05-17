@@ -1,0 +1,117 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://jsonschema.net",
+  "required": false,
+  "properties": {
+    "pluginLocations": {
+      "type": "object",
+      "required": true,
+      "properties": {
+        "config": {
+          "type": "object"
+        },
+        "course": {
+          "type":"object",
+          "properties": {
+            "_globalAudio": {
+              "type": "object",
+              "required": false,
+              "legend": "Global Audio",
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": true,
+                  "title": "Is Enabled",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_onScreenPercentInviewVertical": {
+                  "type": "number",
+                  "required": true,
+                  "default": 1,
+                  "title": "Percentage on-screen",
+                  "inputType": "Number",
+                  "validators": ["required", "number"],
+                  "help": "Less than this value is considered off-screen"
+                },
+                "_offScreenPause": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": true,
+                  "title": "Pause when off-screen?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_offScreenRewind": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": true,
+                  "title": "Rewind when off-screen?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_showPauseControl": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": false,
+                  "title": "Show play/pause button?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_onPauseRewind": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": false,
+                  "title": "Rewind when paused?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_items": {
+                  "type": "array",
+                  "required": false,
+                  "title": "Audio Items",
+                  "items": {
+                    "type": "object",
+                    "required": false,
+                    "title": "Items",
+                    "properties": {
+                      "_name": {
+                        "type": "string",
+                        "required": true,
+                        "title": "Name",
+                        "inputType": "Text",
+                        "validators": ["required"],
+                        "translatable": true
+                      },
+                      "_src": {
+                        "type": "string",
+                        "required": true,
+                        "title": "Asset",
+                        "inputType": "Asset:other",
+                        "validators": ["required"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "contentobject": {
+          "type":"object"
+        },
+        "article": {
+          "type":"object"
+        },
+        "block": {
+          "type":"object"
+        },
+        "component": {
+          "type":"object"
+        }
+      }
+    }
+  }
+}

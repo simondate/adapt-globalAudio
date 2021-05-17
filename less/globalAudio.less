@@ -1,0 +1,43 @@
+[data-globalaudio="true"] {
+  display:inline-block;
+}
+
+.globalaudio__player {
+  position: relative;
+  display: inline-block;
+  vertical-align: text-top;
+
+  &.has-globalaudio-play-pause {
+    cursor: pointer;
+  }
+
+  .globalaudio__playpause {
+    .icon-video-play;
+  }
+
+  &.is-globalaudio-playing .globalaudio__playpause {
+    .icon-video-pause;
+  }
+
+  &.is-globalaudio-paused .globalaudio__playpause {
+    .icon-video-play;
+  }
+
+  .globalaudio__controls {
+    display: flex;
+    padding: 0.1em;
+
+    button {
+      background: transparent;
+
+      &.is-disabled {
+        color: rgba(16, 16, 16, 0.3);
+      }
+
+      &:before {
+        font-size: 1.2em;
+      }
+    }
+  }
+
+}
