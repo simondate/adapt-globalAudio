@@ -11,10 +11,6 @@ export default class AudioView extends Backbone.View {
     return this.namedConfig?._src || '';
   }
 
-  get alt() {
-    return this.namedConfig?.alt || '';
-  }
-
   get controls() {
     return this.$el.attr('controls');
   }
@@ -36,11 +32,12 @@ export default class AudioView extends Backbone.View {
     this.isDataReady = false;
     this.setUpListeners();
     this.render();
+    this.update();
   }
 
   setUpListeners() {
     this.$el.on('onscreen', this.onScreenChange);
-    this.listenTo(Adapt, 'media:stop', this.onMediaStop);
+    this.listenTo(Adapt, 'media:stop popup:opened', this.onMediaStop);
   }
 
   onScreenChange(event, { onscreen, percentInview } = {}) {
@@ -116,8 +113,7 @@ export default class AudioView extends Backbone.View {
   async render() {
     this.$el.html(Handlebars.templates.globalAudio({
       ...this.config,
-      _src: this.src,
-      alt: this.alt
+      _src: this.src
     }));
     this.audioTag = new Audio();
     this.audioTag.addEventListener('loadeddata', this.onDataReady);
@@ -143,7 +139,11 @@ export default class AudioView extends Backbone.View {
   update() {
     this.$player.toggleClass('is-globalaudio-playing', !this.isPaused);
     this.$player.toggleClass('is-globalaudio-paused', this.isPaused);
-    Adapt.a11y.toggleEnabled(this.$player.find('.globalaudio__rewind'), this.audioTag.currentSeconds !== 0);
+    const globals = Adapt.course.get('_globals');
+    const ariaLabel = (globals?._extensions?._globalAudio?.ariaRegion || 'Audio Player') + ', ' + (this.isPaused
+      ? (globals?._extensions?._globalAudio?.play || 'play')
+      : (globals?._extensions?._globalAudio?.pause || 'pause'));
+    this.$player.find('.globalaudio__playpause').attr('aria-label', ariaLabel);
   }
 
   async onPlayPauseClick(event) {

@@ -3,6 +3,32 @@
   "$schema": "http://json-schema.org/draft-04/schema",
   "id": "http://jsonschema.net",
   "required": false,
+   "globals": {
+    "play": {
+      "type": "string",
+      "required": true,
+      "default": "Play",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "pause": {
+      "type": "string",
+      "required": true,
+      "default": "Pause",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "ariaRegion": {
+      "type": "string",
+      "required": true,
+      "default": "Audio player",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    }
+  },
   "properties": {
     "pluginLocations": {
       "type": "object",
