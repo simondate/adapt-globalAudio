@@ -26,19 +26,21 @@ class GlobalAudio extends Backbone.Controller {
   setUpAudioContext() {
     if (!window.AudioContext) return;
     this.audioContext = new AudioContext({});
-    const resume = async (event) => {
-      if (!event.isTrusted) return; // Ignore synthetic events
-      try {
-        await this.audioContext.resume();
-        document.removeEventListener('click', resume);
-        this.isResumed = true;
-        this.trigger('resumed');
-        Adapt.log.info('GlobalAudio: Context started');
-      } catch (err) {
-        Adapt.log.warn('GlobalAudio: Context failed');
-      }
-    };
-    document.addEventListener('click', resume);
+    document.addEventListener('click', this.resume);
+  }
+
+  async resume(event) {
+    if (this.isResumed) return;
+    if (!event.isTrusted) return; // Ignore synthetic events
+    try {
+      await this.audioContext.resume();
+      document.removeEventListener('click', this.resume);
+      this.isResumed = true;
+      this.trigger('resumed');
+      Adapt.log.info('GlobalAudio: Context started');
+    } catch (err) {
+      Adapt.log.warn('GlobalAudio: Context failed');
+    }
   }
 
   setUpEventListeners() {
@@ -62,7 +64,8 @@ class GlobalAudio extends Backbone.Controller {
       },
       onElementAdd(div) {
         if (div.AudioView) return;
-        if ($(div).closest('.aria-label').length) return div.remove();
+        const $div = $(div);
+        if ($div.closest('.aria-label').length) return $div.remove();
         div.AudioView = new AudioView({ el: div });
       },
       onElementRemove(div) {

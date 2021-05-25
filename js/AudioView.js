@@ -69,18 +69,15 @@ export default class AudioView extends Backbone.View {
 
   async play() {
     return new Promise(resolve => {
-      // wait for state of audio context to be resumed
-      setTimeout(() => {
-        const isFinished = (this.audioTag.currentSeconds === this.audioTag.duration - 1);
-        if (isFinished) {
-          if (!this.isPaused) this.audioTag.pause();
-        }
-        if (Adapt.globalAudio.audioContext?.state !== 'suspended') {
-          this.audioTag.play();
-        }
-        this.update();
-        resolve();
-      }, 50);
+      const isFinished = (this.audioTag.currentSeconds === this.audioTag.duration - 1);
+      if (isFinished) {
+        if (!this.isPaused) this.audioTag.pause();
+      }
+      if (Adapt.globalAudio.audioContext?.state !== 'suspended') {
+        this.audioTag.play();
+      }
+      this.update();
+      resolve();
     });
   }
 
@@ -121,7 +118,6 @@ export default class AudioView extends Backbone.View {
     if (Adapt.globalAudio.audioContext) {
       this.sourceNode = Adapt.globalAudio.audioContext.createMediaElementSource(this.audioTag);
       this.sourceNode.connect(Adapt.globalAudio.audioContext.destination);
-      await Adapt.globalAudio.whenResumed();
     }
     this.audioTag.src = this.src;
   }
@@ -147,6 +143,7 @@ export default class AudioView extends Backbone.View {
   }
 
   async onPlayPauseClick(event) {
+    await Adapt.globalAudio.resume(event.originalEvent);
     Adapt.trigger('media:stop', this);
     if (this.$el.closest('button, a, [role=link], [role=button]').length) {
       // do not activate any parent buttons
