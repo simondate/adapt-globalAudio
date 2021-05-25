@@ -34,7 +34,7 @@ The attributes listed below are used in *course.json* to configure **Adapt Globa
 >>**\_src** (string):  The path to the audio asset.
 
 ----------------------------
-**Version number:**  0.0.1   
+**Version number:**  0.0.2   
 **Framework versions:**  >=5.8   
 **Author / maintainer:** Kineo   
 **Accessibility support:** Yes   
