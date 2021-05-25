@@ -8,12 +8,12 @@
             "_onPauseRewind": false,
             "_items": [
                 {
-                "_name": "test",
-                "_src": "course/en/audio/test.mp3"
+                  "_name": "test",
+                  "_src": "course/en/audio/test.mp3"
                 },
                 {
-                "_name": "32",
-                "_src": "course/en/audio/32.mp3"
+                  "_name": "32",
+                  "_src": "course/en/audio/32.mp3"
                 }
             ]
         }

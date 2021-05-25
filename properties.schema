@@ -107,7 +107,7 @@
                         "type": "string",
                         "required": true,
                         "title": "Asset",
-                        "inputType": "Asset:other",
+                        "inputType": "Asset:audio",
                         "validators": ["required"]
                       }
                     }
