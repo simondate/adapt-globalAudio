@@ -8,39 +8,11 @@ class GlobalAudio extends Backbone.Controller {
     this.listenTo(Adapt, 'app:dataReady', this.onDataReady);
   }
 
-  async whenResumed() {
-    return new Promise(resolve => {
-      if (this.isResumed) return resolve();
-      this.once('resumed', resolve);
-    });
-  }
-
   onDataReady() {
     const config = Adapt.course.get('_globalAudio');
     if (!config?._isEnabled) return;
-    this.setUpAudioContext();
     this.setUpEventListeners();
     this.setUp();
-  }
-
-  setUpAudioContext() {
-    if (!window.AudioContext) return;
-    this.audioContext = new AudioContext({});
-    document.addEventListener('click', this.resume);
-  }
-
-  async resume(event) {
-    if (this.isResumed) return;
-    if (!event.isTrusted) return; // Ignore synthetic events
-    try {
-      await this.audioContext.resume();
-      document.removeEventListener('click', this.resume);
-      this.isResumed = true;
-      this.trigger('resumed');
-      Adapt.log.info('GlobalAudio: Context started');
-    } catch (err) {
-      Adapt.log.warn('GlobalAudio: Context failed');
-    }
   }
 
   setUpEventListeners() {
@@ -74,7 +46,6 @@ class GlobalAudio extends Backbone.Controller {
         div.AudioView = null;
       }
     });
-
   }
 
 }

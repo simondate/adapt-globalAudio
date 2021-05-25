@@ -26,7 +26,7 @@ export default class AudioView extends Backbone.View {
   }
 
   initialize() {
-    _.bindAll(this, 'render', 'onScreenChange', 'update', 'onDataReady', 'onTimeUpdate');
+    _.bindAll(this, 'render', 'onScreenChange', 'update', 'onTimeUpdate');
     this.config = Adapt.course.get('_globalAudio');
     this.hasUserPaused = false;
     this.isDataReady = false;
@@ -46,19 +46,19 @@ export default class AudioView extends Backbone.View {
     this.onOnScreen();
   }
 
-  async onOffScreen() {
+  onOffScreen() {
     if (this.isPaused || this.hasUserPaused) return;
     if (!this.config._offScreenPause) return;
     this.pause(true);
     if (!this.config._offScreenRewind) return;
-    await this.rewind();
+    this.rewind();
   }
 
-  async onOnScreen() {
+  onOnScreen() {
     if (!this.isPaused) return;
     if (!this.config._autoPlay) return;
     if (this.hasUserPaused) return;
-    await this.play(true);
+    this.play(true);
   }
 
   onMediaStop(view) {
@@ -67,18 +67,16 @@ export default class AudioView extends Backbone.View {
     this.rewind();
   }
 
-  async play() {
-    return new Promise(resolve => {
-      const isFinished = (this.audioTag.currentSeconds === this.audioTag.duration - 1);
-      if (isFinished) {
-        if (!this.isPaused) this.audioTag.pause();
-      }
-      if (Adapt.globalAudio.audioContext?.state !== 'suspended') {
-        this.audioTag.play();
-      }
-      this.update();
-      resolve();
-    });
+  play() {
+    Adapt.trigger('media:stop');
+    const isFinished = (this.audioTag.currentSeconds === this.audioTag.duration - 1);
+    if (isFinished) {
+      if (!this.isPaused) this.audioTag.pause();
+    }
+    if (Adapt.globalAudio.audioContext?.state !== 'suspended') {
+      this.audioTag.play();
+    }
+    this.update();
   }
 
   pause() {
@@ -86,7 +84,7 @@ export default class AudioView extends Backbone.View {
     this.update();
   }
 
-  async rewind() {
+  rewind() {
     const isPaused = this.isPaused;
     if (!isPaused) this.audioTag.pause();
     this.audioTag.currentTime = 0;
@@ -100,32 +98,21 @@ export default class AudioView extends Backbone.View {
     return this.audioTag.paused;
   }
 
-  async togglePlayPause() {
+  togglePlayPause() {
     if (this.isPaused) {
       return this.play();
     }
     this.pause();
   }
 
-  async render() {
+  render() {
     this.$el.html(Handlebars.templates.globalAudio({
       ...this.config,
       _src: this.src
     }));
     this.audioTag = new Audio();
-    this.audioTag.addEventListener('loadeddata', this.onDataReady);
     this.audioTag.addEventListener('timeupdate', this.onTimeUpdate);
-    if (Adapt.globalAudio.audioContext) {
-      this.sourceNode = Adapt.globalAudio.audioContext.createMediaElementSource(this.audioTag);
-      this.sourceNode.connect(Adapt.globalAudio.audioContext.destination);
-    }
     this.audioTag.src = this.src;
-  }
-
-  async onDataReady() {
-    this.isDataReady = true;
-    this.pause();
-    await this.rewind();
   }
 
   onTimeUpdate() {
@@ -142,26 +129,17 @@ export default class AudioView extends Backbone.View {
     this.$player.find('.globalaudio__playpause').attr('aria-label', ariaLabel);
   }
 
-  async onPlayPauseClick(event) {
-    await Adapt.globalAudio.resume(event.originalEvent);
-    Adapt.trigger('media:stop', this);
+  onPlayPauseClick(event) {
     if (this.$el.closest('button, a, [role=link], [role=button]').length) {
       // do not activate any parent buttons
       event.preventDefault();
       event.stopPropagation();
     }
-    await this.togglePlayPause();
-    this.hasUserPaused = this.audioTag.isPaused;
-    if (this.hasUserPaused && this.config._onPauseRewind) {
-      await this.rewind();
-    }
+    this.togglePlayPause();
   }
 
   destroyPlayer() {
-    if (!this.sourceNode) return;
     this.pause();
-    this.sourceNode.disconnect(Adapt.globalAudio.audioContext.destination);
-    this.audioTag.removeEventListener('loadeddata', this.onDataReady);
     this.audioTag.removeEventListener('timeupdate', this.onTimeUpdate);
   }
 
