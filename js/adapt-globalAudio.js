@@ -11,20 +11,8 @@ class GlobalAudio extends Backbone.Controller {
   onDataReady() {
     const config = Adapt.course.get('_globalAudio');
     if (!config?._isEnabled) return;
-    this.setUpEventListeners();
-    this.setUp();
-  }
-
-  setUpEventListeners() {
     document.body.addEventListener('transitionend', this.checkOnScreen.bind(this));
     this.listenTo(Adapt, 'notify:opened', this.checkOnScreen);
-  }
-
-  checkOnScreen() {
-    $.inview();
-  }
-
-  setUp() {
     Handlebars.registerHelper('ga', function (context, ...flags) {
       // passes named attributes from handlebars context to parent div attributes
       // this can be used for specifying behaviour in the json but currently isn't used
@@ -46,6 +34,10 @@ class GlobalAudio extends Backbone.Controller {
         div.AudioView = null;
       }
     });
+  }
+
+  checkOnScreen() {
+    $.inview();
   }
 
 }
