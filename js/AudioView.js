@@ -44,7 +44,9 @@ export default class AudioView extends Backbone.View {
     if (!this.audioTag.paused) return;
     if (!this.config._autoPlay) return;
     if (this.hasUserPaused) return;
-    this.play();
+    setTimeout(() => {
+      this.play();
+    }, this.config._autoPlayDelay || 0);
   }
 
   onMediaStop(view) {

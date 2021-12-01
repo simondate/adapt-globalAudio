@@ -62,6 +62,22 @@
                   "validators": ["required", "number"],
                   "help": "Less than this value is considered off-screen"
                 },
+                "_autoPlay": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": true,
+                  "title": "Autoplay when in-screen?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_autoPlayDelay": {
+                  "type": "number",
+                  "required": false,
+                  "default": 500,
+                  "title": "Autoplay delay",
+                  "inputType": "Number",
+                  "help": "The number of milliseconds before autoplay starts"
+                },
                 "_offScreenPause": {
                   "type": "boolean",
                   "required": true,
