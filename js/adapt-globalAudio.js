@@ -1,6 +1,7 @@
 import Adapt from 'core/js/adapt';
 import { DOMModifier } from './injector';
 import AudioView from './AudioView';
+import AudioNavigationView from './audioNavigationView';
 
 class GlobalAudio extends Backbone.Controller {
 
@@ -8,11 +9,22 @@ class GlobalAudio extends Backbone.Controller {
     this.listenTo(Adapt, 'app:dataReady', this.onDataReady);
   }
 
+  renderNavigationView(pageModel) {
+    console.log('navigation view')
+    $('.nav__drawer-btn').before(new AudioNavigationView({
+      model: pageModel
+    }).$el);
+  }
+
   onDataReady() {
     const config = Adapt.course.get('_globalAudio');
     if (!config?._isEnabled) return;
     document.body.addEventListener('transitionend', this.checkOnScreen.bind(this));
     this.listenTo(Adapt, 'notify:opened', this.checkOnScreen);
+    console.log('listeners')
+    this.listenTo(Adapt, {
+        'router:page': this.renderNavigationView
+    });
     Handlebars.registerHelper('ga', function (context, ...flags) {
       // passes named attributes from handlebars context to parent div attributes
       // this can be used for specifying behaviour in the json but currently isn't used
