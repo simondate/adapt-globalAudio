@@ -2,6 +2,21 @@
   display:inline-block;
 }
 
+.audioNavigation__btn {
+  background: transparent !important;
+  padding: 16px 0.75rem;
+
+  .icon {
+    &:before {
+      content: '';
+      background-image: url(assets/circle.svg);
+      height: 1.5rem;
+      width: 1.5rem;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
 .globalaudio__player {
   position: relative;
   display: inline-block;
