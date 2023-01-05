@@ -12,7 +12,7 @@ export default class AudioNavigationView extends Backbone.View {
 
   attributes() {
     return {
-      'data-order': (Adapt.course.get('_globals')?._extensions?._pageLevelProgress?._navOrder || 0)
+      'data-order': 5
     };
   }
 
