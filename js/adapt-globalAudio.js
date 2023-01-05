@@ -12,18 +12,19 @@ class GlobalAudio extends Backbone.Controller {
   }
 
   renderNavigationView(pageModel) {
+    if(!Adapt.course.get('_globalAudio')._navigationMuteButton) return;
     $('.nav__drawer-btn').before(new AudioNavigationView({
       model: pageModel
     }).$el);
   }
 
   globalMute() {
-    console.log('globalMute()')
     Adapt.trigger('media:stop');
+    Adapt.globalAudioMute = true;
   }
 
   globalUnmute() {
-    console.log('globalUmute()')
+    Adapt.globalAudioMute = false;
   }
 
   onDataReady() {

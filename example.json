@@ -2,10 +2,12 @@
     {
         "_globalAudio": {
             "_isEnabled": true,
+            "_navigationMuteButton": true,
             "_onScreenPercentInviewVertical": 1,
             "_offScreenPause": true,
             "_offScreenRewind": true,
             "_onPauseRewind": false,
+            "_onlyAutoPlayOnce": true,
             "_items": [
                 {
                   "_name": "test",

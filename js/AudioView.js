@@ -17,6 +17,7 @@ export default class AudioView extends Backbone.View {
     this.listenTo(Adapt, 'media:stop popup:opened', this.onMediaStop);
     this.render();
     this.update();
+    this.hasAutoplayed = false;
   }
 
   get namedConfig() {
@@ -43,6 +44,7 @@ export default class AudioView extends Backbone.View {
     }
     if (!this.audioTag.paused) return;
     if (!this.config._autoPlay) return;
+    if (this.config._onlyAutoPlayOnce && this.hasAutoplayed) return;
     if (this.hasUserPaused) return;
     this.play();
   }
@@ -75,6 +77,10 @@ export default class AudioView extends Backbone.View {
 
   play() {
     Adapt.trigger('media:stop', this);
+    if(Adapt.globalAudioMute) return;
+    if(this.config._autoPlay) {
+      this.hasAutoplayed = true;
+    }
     const isFinished = (this.audioTag.currentSeconds === this.audioTag.duration - 1);
     if (isFinished && !this.audioTag.paused) this.audioTag.pause();
     this.audioTag.play();
