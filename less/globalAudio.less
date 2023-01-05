@@ -8,12 +8,20 @@
   float: right;
 
   .icon {
+    color: @primary-color;
     &:before {
-      content: '';
-      background-image: url(assets/circle.svg);
-      height: 1.5rem;
-      width: 1.5rem;
-      background-repeat: no-repeat;
+      content: @fa-var-volume-mute;
+      .fa-icon;
+      .fas;
+      font-size: 21px;
+      width: 23px;
+      line-height: 1.1;
+    }
+
+    &.muted {
+      &:before {
+        content: @fa-var-volume-up;
+      }
     }
   }
 }

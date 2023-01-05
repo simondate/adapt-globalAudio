@@ -7,13 +7,22 @@ class GlobalAudio extends Backbone.Controller {
 
   initialize() {
     this.listenTo(Adapt, 'app:dataReady', this.onDataReady);
+    this.listenTo(Adapt, 'globalAudio:mute', this.globalMute);
+    this.listenTo(Adapt, 'globalAudio:unmute', this.globalUnmute);
   }
 
   renderNavigationView(pageModel) {
-    console.log('navigation view')
     $('.nav__drawer-btn').before(new AudioNavigationView({
       model: pageModel
     }).$el);
+  }
+
+  globalMute() {
+    console.log('globalMute()')
+  }
+
+  globalUnmute() {
+    console.log('globalUmute()')
   }
 
   onDataReady() {
@@ -21,7 +30,6 @@ class GlobalAudio extends Backbone.Controller {
     if (!config?._isEnabled) return;
     document.body.addEventListener('transitionend', this.checkOnScreen.bind(this));
     this.listenTo(Adapt, 'notify:opened', this.checkOnScreen);
-    console.log('listeners')
     this.listenTo(Adapt, {
         'router:page': this.renderNavigationView
     });
