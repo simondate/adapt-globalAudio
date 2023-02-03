@@ -26,6 +26,7 @@ class GlobalAudio extends Backbone.Controller {
 
   globalUnmute() {
     Adapt.globalAudioMute = false;
+    $('body').removeClass('global-mute');
   }
 
   onDataReady() {
