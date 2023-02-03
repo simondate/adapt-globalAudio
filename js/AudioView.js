@@ -12,11 +12,11 @@ export default class AudioView extends Backbone.View {
   initialize() {
     _.bindAll(this, 'render', 'onScreenChange', 'update');
     this.config = Adapt.course.get('_globalAudio');
-    this.hasUserPaused = false;
     this.$el.on('onscreen', this.onScreenChange);
     this.listenTo(Adapt, 'media:stop popup:opened', this.onMediaStop);
     this.render();
     this.update();
+    this.hasUserPaused = false;
     this.hasAutoplayed = false;
   }
 
@@ -35,7 +35,11 @@ export default class AudioView extends Backbone.View {
   onScreenChange(event, { onscreen, percentInview } = {}) {
     const isOffScreen = (!onscreen || percentInview < (this.config._onScreenPercentInviewVertical ?? 1));
     if (isOffScreen) {
-      if (this.audioTag.paused || this.hasUserPaused) return;
+      if (this.audioTag.paused || this.hasUserPaused) {
+        this.hasUserPaused = false;
+        return;
+      }
+
       if (!this.config._offScreenPause) return;
       this.pause();
       if (!this.config._offScreenRewind) return;
@@ -85,10 +89,12 @@ export default class AudioView extends Backbone.View {
     if (isFinished && !this.audioTag.paused) this.audioTag.pause();
     this.audioTag.play();
     this.update();
+    this.hasUserPaused = false;
   }
 
   pause() {
     if (!this.audioTag.paused) this.audioTag.pause();
+    this.hasUserPaused = true;
     this.update();
   }
 
