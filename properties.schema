@@ -70,6 +70,14 @@
                   "validators": ["required", "number"],
                   "help": "Less than this value is considered off-screen"
                 },
+                "_autoPlay": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": true,
+                  "title": "Autoplay?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
                 "_offScreenPause": {
                   "type": "boolean",
                   "required": true,
