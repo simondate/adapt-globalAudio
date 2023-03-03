@@ -13,7 +13,7 @@ export default class AudioView extends Backbone.View {
     _.bindAll(this, 'render', 'onScreenChange', 'update');
     this.config = Adapt.course.get('_globalAudio');
     this.$el.on('onscreen', this.onScreenChange);
-    this.listenTo(Adapt, 'media:stop popup:opened', this.onMediaStop);
+    this.listenTo(Adapt, 'media:stop', this.onMediaStop);
     this.render();
     this.update();
     this.hasUserPaused = false;
