@@ -23,9 +23,9 @@ export default class AudioNavigationView extends Backbone.View {
   }
 
   initialize() {
+    if(!Adapt.globalAudioMute) Adapt.globalAudioMute = false;
     this.setUpEventListeners();
     this.render();
-    this.globalMute = false;
   }
 
   setUpEventListeners() {
@@ -36,19 +36,19 @@ export default class AudioNavigationView extends Backbone.View {
 
   render() {
     const template = Handlebars.templates.globalAudioNavigation;
-    this.$el.html(template({}));
+    this.$el.html(template({"mute": Adapt.globalAudioMute}));
   }
 
   onAudioClicked(event) {
     if (event && event.preventDefault) event.preventDefault();
     // implement mute / unmute functionality
-    if(this.globalMute) {
+    if(Adapt.globalAudioMute) {
       Adapt.trigger('globalAudio:unmute')
     } else {  
       Adapt.trigger('globalAudio:mute')
     }
     $(this.$el).find('.icon').toggleClass('mute');
-    this.globalMute = !this.globalMute;
+    Adapt.globalAudioMute = !Adapt.globalAudioMute;
   }
 
   remove() {

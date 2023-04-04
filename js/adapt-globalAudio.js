@@ -20,12 +20,10 @@ class GlobalAudio extends Backbone.Controller {
 
   globalMute() {
     Adapt.trigger('media:stop');
-    Adapt.globalAudioMute = true;
     $('body').addClass('global-mute');
   }
 
   globalUnmute() {
-    Adapt.globalAudioMute = false;
     $('body').removeClass('global-mute');
   }
 
